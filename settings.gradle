@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "DPermission"
 include ':app'
+include ':DPermission'
