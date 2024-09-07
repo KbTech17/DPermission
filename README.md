@@ -1,5 +1,9 @@
 # DPermission
 
+[![MIT Java](https://www.vectorlogo.zone/logos/java/java-ar21.svg)]()
+[![GPLv3 Kotlin](https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-ar21.svg)]()
+[![AGPL Android](https://www.vectorlogo.zone/logos/android/android-ar21.svg)]()
+
 DPermission is an extension Android library that makes Android runtime permission request in an efficient and easy way. You can use it for permission request occasions or handle more complex conditions, like showing rationale dialog or go to app settings for allowance manually.
 
 ## Setup Guide
