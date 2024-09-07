@@ -85,8 +85,8 @@ internal abstract class BaseTask(@JvmField var pb: PermissionBuilder) : ChainTas
                     deniedList.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
                 }
             }
-            if (pb.requestCallback != null) {
-                pb.requestCallback!!.onResult(deniedList.isEmpty(), ArrayList(pb.grantedPermissions), deniedList)
+            if (pb.perCallback != null) {
+                pb.perCallback!!.onPermissionResult(deniedList.isEmpty(), ArrayList(pb.grantedPermissions), deniedList)
             }
 
             pb.endRequest()

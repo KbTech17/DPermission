@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dp_th.dpermission.callback.ExplainReasonCallback;
 import com.dp_th.dpermission.callback.ForwardToSettingsCallback;
-import com.dp_th.dpermission.callback.RequestCallback;
+import com.dp_th.dpermission.callback.OnPermissionCallback;
 
 import java.util.List;
 
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private void askPerm1() {
         DPermission.with(this)
                 .permissions(READ_CONTACTS, CAMERA, CALL_PHONE)
-                .request(new RequestCallback() {
+                .request(new OnPermissionCallback() {
                     @Override
-                    public void onResult(boolean allGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
-                        if (allGranted) {
+                    public void onPermissionResult(boolean isGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
+                        if (isGranted) {
                             Toast.makeText(MainActivity.this, "All permissions are granted", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(MainActivity.this, "These permissions are denied", Toast.LENGTH_LONG).show();
@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
                         scope.showRequestReasonDialog(deniedList, "These permissions are required!", "OK", "Cancel");
                     }
                 })
-                .request(new RequestCallback() {
+                .request(new OnPermissionCallback() {
                     @Override
-                    public void onResult(boolean allGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
-                        if (allGranted) {
+                    public void onPermissionResult(boolean isGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
+                        if (isGranted) {
                             Toast.makeText(MainActivity.this, "All permissions are granted", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(MainActivity.this, "These permissions are denied", Toast.LENGTH_LONG).show();
@@ -87,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
                         scope.showForwardToSettingsDialog(deniedList, "You need to allow necessary permissions in Settings manually", "OK", "Cancel");
                     }
                 })
-                .request(new RequestCallback() {
+                .request(new OnPermissionCallback() {
                     @Override
-                    public void onResult(boolean allGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
-                        if (allGranted) {
+                    public void onPermissionResult(boolean isGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
+                        if (isGranted) {
                             Toast.makeText(MainActivity.this, "All permissions are granted", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(MainActivity.this, "These permissions are denied", Toast.LENGTH_LONG).show();

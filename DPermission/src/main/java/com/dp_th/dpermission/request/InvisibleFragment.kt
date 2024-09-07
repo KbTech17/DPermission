@@ -277,8 +277,8 @@ class InvisibleFragment : Fragment() {
                     pb.grantedPermissions.add(permission)
                 }
             }
-            val allGranted = pb.grantedPermissions.size == pb.normalPermissions.size
-            if (allGranted) { // If all permissions are granted, finish current task directly.
+            val isGranted = pb.grantedPermissions.size == pb.normalPermissions.size
+            if (isGranted) { // If all permissions are granted, finish current task directly.
                 task.finish()
             } else {
                 var shouldFinishTheTask = true // Indicate if we should finish the task
@@ -337,12 +337,12 @@ class InvisibleFragment : Fragment() {
                     pb.permanentDeniedPermissions.remove(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
                     task.finish()
                 } else {
-                    var goesToRequestCallback = true // Indicate if we should finish the task
+                    var goesToOnPermissionCallback = true // Indicate if we should finish the task
                     val shouldShowRationale =
                         shouldShowRequestPermissionRationale(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
                     // If explainReasonCallback is not null and we should show rationale. Try the ExplainReasonCallback.
                     if ((pb.explainReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) && shouldShowRationale) {
-                        goesToRequestCallback =
+                        goesToOnPermissionCallback =
                             false // shouldn't because ExplainReasonCallback handles it
                         val permissionsToExplain: MutableList<String> = ArrayList()
                         permissionsToExplain.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
@@ -358,7 +358,7 @@ class InvisibleFragment : Fragment() {
                             )
                         }
                     } else if (pb.forwardToSettingsCallback != null && !shouldShowRationale) {
-                        goesToRequestCallback =
+                        goesToOnPermissionCallback =
                             false // shouldn't because ForwardToSettingsCallback handles it
                         val permissionsToForward: MutableList<String> = ArrayList()
                         permissionsToForward.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
@@ -371,7 +371,7 @@ class InvisibleFragment : Fragment() {
                     // There's case that ExplainReasonCallback or ForwardToSettingsCallback is called, but developer didn't invoke
                     // showRequestReasonDialog or showForwardToSettingsDialog in the callback.
                     // At this case and all other cases, task should be finished.
-                    if (goesToRequestCallback || !pb.showDialogCalled) {
+                    if (goesToOnPermissionCallback || !pb.showDialogCalled) {
                         task.finish()
                     }
                 }
@@ -523,12 +523,12 @@ class InvisibleFragment : Fragment() {
                     pb.permanentDeniedPermissions.remove(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
                     task.finish()
                 } else {
-                    var goesToRequestCallback = true // Indicate if we should finish the task
+                    var goesToOnPermissionCallback = true // Indicate if we should finish the task
                     val shouldShowRationale =
                         shouldShowRequestPermissionRationale(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
                     // If explainReasonCallback is not null and we should show rationale. Try the ExplainReasonCallback.
                     if ((pb.explainReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) && shouldShowRationale) {
-                        goesToRequestCallback =
+                        goesToOnPermissionCallback =
                             false // shouldn't because ExplainReasonCallback handles it
                         val permissionsToExplain: MutableList<String> = ArrayList()
                         permissionsToExplain.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
@@ -544,7 +544,7 @@ class InvisibleFragment : Fragment() {
                             )
                         }
                     } else if (pb.forwardToSettingsCallback != null && !shouldShowRationale) {
-                        goesToRequestCallback =
+                        goesToOnPermissionCallback =
                             false // shouldn't because ForwardToSettingsCallback handles it
                         val permissionsToForward: MutableList<String> = ArrayList()
                         permissionsToForward.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
@@ -554,7 +554,7 @@ class InvisibleFragment : Fragment() {
                         )
                     }
 
-                    if (goesToRequestCallback || !pb.showDialogCalled) {
+                    if (goesToOnPermissionCallback || !pb.showDialogCalled) {
                         task.finish()
                     }
                 }

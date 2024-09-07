@@ -14,7 +14,7 @@ import com.dp_th.dpermission.DPermission
 import com.dp_th.dpermission.callback.ExplainReasonCallback
 import com.dp_th.dpermission.callback.ExplainReasonCallbackWithBeforeParam
 import com.dp_th.dpermission.callback.ForwardToSettingsCallback
-import com.dp_th.dpermission.callback.RequestCallback
+import com.dp_th.dpermission.callback.OnPermissionCallback
 import com.dp_th.dpermission.dialog.DefaultDialog
 import com.dp_th.dpermission.dialog.RationaleDialog
 import com.dp_th.dpermission.dialog.RationaleDialogFragment
@@ -77,7 +77,7 @@ class PermissionBuilder(
     @JvmField
     var forwardPermissions: MutableSet<String> = LinkedHashSet()
     @JvmField
-    var requestCallback: RequestCallback? = null
+    var perCallback: OnPermissionCallback? = null
     @JvmField
     var explainReasonCallback: ExplainReasonCallback? = null
     @JvmField
@@ -109,8 +109,8 @@ class PermissionBuilder(
         return this
     }
 
-    fun request(callback: RequestCallback?) {
-        requestCallback = callback
+    fun request(callback: OnPermissionCallback?) {
+        perCallback = callback
         startRequest()
     }
 
