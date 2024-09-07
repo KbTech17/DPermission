@@ -12,14 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.dp_th.dpermission.callback.RequestReasonCallback;
-import com.dp_th.dpermission.callback.ManualSettingCallback;
-import com.dp_th.dpermission.callback.OnPermissionCallback;
 
 import java.util.List;
 
-import com.dp_th.dpermission.request.ReasonToAsk;
-import com.dp_th.dpermission.request.ManualScope;
 
 public class MainActivity extends AppCompatActivity {
 
