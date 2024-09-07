@@ -82,6 +82,7 @@ Then just request DPermissions as follow.
     });
 ```
 
+
 [![GPLv3 Kotlin](https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-ar21.svg)]()
 ```kotlin
   DPermission.with(this)
