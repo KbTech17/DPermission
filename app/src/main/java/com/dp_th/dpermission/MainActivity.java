@@ -12,6 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.dp_th.dpermission.callback.ManualSettingCallback;
+import com.dp_th.dpermission.callback.OnPermissionCallback;
+import com.dp_th.dpermission.callback.RequestReasonCallback;
+import com.dp_th.dpermission.request.ManualScope;
+import com.dp_th.dpermission.request.ReasonToAsk;
 
 import java.util.List;
 
