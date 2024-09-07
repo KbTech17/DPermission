@@ -5,7 +5,7 @@
 
     <groupId>com.dp_th.dpermission</groupId>
     <artifactId>java-maven</artifactId>
-    <version>master-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <name>DPermission</name>
     <!-- FIXME change it to the project's website -->
