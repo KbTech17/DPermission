@@ -3,8 +3,6 @@ package com.dp_th.dpermission.request
 import android.Manifest
 import android.os.Build
 import android.provider.Settings
-import com.dp_th.dpermission.request.BaseTask
-import com.dp_th.dpermission.request.PermissionBuilder
 
 internal class RequestWriteSettingsPermission internal constructor(permissionBuilder: PermissionBuilder) :
     BaseTask(permissionBuilder) {
@@ -17,13 +15,13 @@ internal class RequestWriteSettingsPermission internal constructor(permissionBui
                     finish()
                     return
                 }
-                if (pb.explainReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+                if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
                     val requestList = mutableListOf(Manifest.permission.WRITE_SETTINGS)
                     if (pb.explainReasonCallbackWithBeforeParam != null) {
                         // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
                         pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
                     } else {
-                        pb.explainReasonCallback!!.onExplainReason(explainScope, requestList)
+                        pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                     }
                 } else {
                     // No implementation of explainReasonCallback, we can't request

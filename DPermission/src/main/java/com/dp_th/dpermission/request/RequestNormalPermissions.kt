@@ -19,14 +19,14 @@ internal class RequestNormalPermissions internal constructor(permissionBuilder: 
             finish()
             return
         }
-        if (pb.explainReasonBeforeRequest && (pb.explainReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null)) {
-            pb.explainReasonBeforeRequest = false
+        if (pb.explainBeforeRequest && (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null)) {
+            pb.explainBeforeRequest = false
             pb.deniedPermissions.addAll(requestList)
             if (pb.explainReasonCallbackWithBeforeParam != null) {
                 // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
                 pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
             } else {
-                pb.explainReasonCallback!!.onExplainReason(explainScope, requestList)
+                pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
             }
         } else {
             // Do the request at once. Always request all permissions no matter they are already granted or not, in case user turn them off in Settings.

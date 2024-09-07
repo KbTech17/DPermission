@@ -1,7 +1,7 @@
 package com.dp_th.dpermission;
 
 import static android.Manifest.permission.CALL_PHONE;
-import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.Manifest.permission_group.CAMERA;
 
 import android.os.Bundle;
@@ -12,15 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.dp_th.dpermission.callback.ExplainReasonCallback;
-import com.dp_th.dpermission.callback.ForwardToSettingsCallback;
+import com.dp_th.dpermission.callback.RequestReasonCallback;
+import com.dp_th.dpermission.callback.ManualSettingCallback;
 import com.dp_th.dpermission.callback.OnPermissionCallback;
 
 import java.util.List;
 
-import com.dp_th.dpermission.R;
-import com.dp_th.dpermission.request.ExplainScope;
-import com.dp_th.dpermission.request.ForwardScope;
+import com.dp_th.dpermission.request.ReasonToAsk;
+import com.dp_th.dpermission.request.ManualScope;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void askPerm1() {
         DPermission.with(this)
-                .permissions(READ_CONTACTS, CAMERA, CALL_PHONE)
+                .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
                 .request(new OnPermissionCallback() {
                     @Override
                     public void onPermissionResult(boolean isGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
@@ -53,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void askPerm2() {
         DPermission.with(this)
-                .permissions(READ_CONTACTS, CAMERA, CALL_PHONE)
-                .onExplainRequestReason(new ExplainReasonCallback() {
+                .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
+                .onReasonToRequest(new RequestReasonCallback() {
                     @Override
-                    public void onExplainReason(@NonNull ExplainScope scope, @NonNull List<String> deniedList) {
-                        scope.showRequestReasonDialog(deniedList, "These permissions are required!", "OK", "Cancel");
+                    public void onExplainReason(@NonNull ReasonToAsk reason, @NonNull List<String> deniedList) {
+                        reason.showReasonDialog(deniedList, "These permissions are required!", "OK", "Cancel");
                     }
                 })
                 .request(new OnPermissionCallback() {
@@ -74,20 +73,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void askPerm3() {
         DPermission.with(this)
-                .permissions(READ_CONTACTS, CAMERA, CALL_PHONE)
-                .onExplainRequestReason(new ExplainReasonCallback() {
+                .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
+                .onReasonToRequest(new RequestReasonCallback() {
                     @Override
-                    public void onExplainReason(@NonNull ExplainScope scope, @NonNull List<String> deniedList) {
-                        scope.showRequestReasonDialog(deniedList, "These permissions are required!", "OK", "Cancel");
+                    public void onExplainReason(@NonNull ReasonToAsk reason, @NonNull List<String> deniedList) {
+                        reason.showReasonDialog(deniedList, "These permissions are required!", "OK", "Cancel");
                     }
-                })
-                .onForwardToSettings(new ForwardToSettingsCallback() {
+                }).onManualSettings(new ManualSettingCallback() {
                     @Override
-                    public void onForwardToSettings(@NonNull ForwardScope scope, @NonNull List<String> deniedList) {
-                        scope.showForwardToSettingsDialog(deniedList, "You need to allow necessary permissions in Settings manually", "OK", "Cancel");
+                    public void onManualSettings(@NonNull ManualScope manual, @NonNull List<String> deniedList) {
+                        manual.showManualSettingDialog(deniedList, "You need to allow necessary permissions in Settings manually", "OK", "Cancel");
                     }
-                })
-                .request(new OnPermissionCallback() {
+                }).request(new OnPermissionCallback() {
                     @Override
                     public void onPermissionResult(boolean isGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
                         if (isGranted) {
@@ -102,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void askPerm4() {
         DPermission.with(this)
-                .permissions(READ_CONTACTS, CAMERA, CALL_PHONE)
-                .explainReasonBeforeRequest()
+                .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
+                .explainBeforeRequest()
 //        ..................YOUR_CODE......................
         ;
     }

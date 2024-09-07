@@ -28,13 +28,13 @@ internal class RequestBodySensorsBackgroundPermission internal constructor(permi
                 false
             }
             if (bodySensorGranted) {
-                if (pb.explainReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+                if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
                     val requestList = mutableListOf(BODY_SENSORS_BACKGROUND)
                     if (pb.explainReasonCallbackWithBeforeParam != null) {
                         // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
                         pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
                     } else {
-                        pb.explainReasonCallback!!.onExplainReason(explainScope, requestList)
+                        pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                     }
                 } else {
                     // No implementation of explainReasonCallback, so we have to request BODY_SENSORS_BACKGROUND without explanation.

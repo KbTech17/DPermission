@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.dp_th.dpermission.DPermission
-import com.dp_th.dpermission.callback.ExplainReasonCallback
+import com.dp_th.dpermission.callback.RequestReasonCallback
 import com.dp_th.dpermission.callback.ExplainReasonCallbackWithBeforeParam
-import com.dp_th.dpermission.callback.ForwardToSettingsCallback
+import com.dp_th.dpermission.callback.ManualSettingCallback
 import com.dp_th.dpermission.callback.OnPermissionCallback
 import com.dp_th.dpermission.dialog.DefaultDialog
 import com.dp_th.dpermission.dialog.RationaleDialog
@@ -58,7 +58,7 @@ class PermissionBuilder(
     @JvmField
     var specialPermissions: MutableSet<String>
     @JvmField
-    var explainReasonBeforeRequest = false
+    var explainBeforeRequest = false
     @JvmField
     var showDialogCalled = false
     @JvmField
@@ -79,27 +79,27 @@ class PermissionBuilder(
     @JvmField
     var perCallback: OnPermissionCallback? = null
     @JvmField
-    var explainReasonCallback: ExplainReasonCallback? = null
+    var requestReasonCallback: RequestReasonCallback? = null
     @JvmField
     var explainReasonCallbackWithBeforeParam: ExplainReasonCallbackWithBeforeParam? = null
     @JvmField
-    var forwardToSettingsCallback: ForwardToSettingsCallback? = null
+    var manualSettingCallback: ManualSettingCallback? = null
     val targetSdkVersion: Int
         get() = activity.applicationInfo.targetSdkVersion
-    fun onExplainRequestReason(callback: ExplainReasonCallback?): PermissionBuilder {
-        explainReasonCallback = callback
+    fun onReasonToRequest(callback: RequestReasonCallback?): PermissionBuilder {
+        requestReasonCallback = callback
         return this
     }
-    fun onExplainRequestReason(callback: ExplainReasonCallbackWithBeforeParam?): PermissionBuilder {
+    fun onReasonToRequest(callback: ExplainReasonCallbackWithBeforeParam?): PermissionBuilder {
         explainReasonCallbackWithBeforeParam = callback
         return this
     }
-    fun onForwardToSettings(callback: ForwardToSettingsCallback?): PermissionBuilder {
-        forwardToSettingsCallback = callback
+    fun onManualSettings(callback: ManualSettingCallback?): PermissionBuilder {
+        manualSettingCallback = callback
         return this
     }
-    fun explainReasonBeforeRequest(): PermissionBuilder {
-        explainReasonBeforeRequest = true
+    fun explainBeforeRequest(): PermissionBuilder {
+        explainBeforeRequest = true
         return this
     }
 
@@ -115,7 +115,7 @@ class PermissionBuilder(
     }
 
     fun showHandlePermissionDialog(
-        chainTask: ChainTask,
+        reasonTask: ReasonTask,
         showReasonOrGoSettings: Boolean,
         permissions: List<String>,
         message: String,
@@ -131,18 +131,18 @@ class PermissionBuilder(
             lightColor,
             darkColor
         )
-        showHandlePermissionDialog(chainTask, showReasonOrGoSettings, defaultDialog)
+        showHandlePermissionDialog(reasonTask, showReasonOrGoSettings, defaultDialog)
     }
 
     fun showHandlePermissionDialog(
-        chainTask: ChainTask,
+        reasonTask: ReasonTask,
         showReasonOrGoSettings: Boolean,
         dialog: RationaleDialog
     ) {
         showDialogCalled = true
         val permissions = dialog.permissionsToRequest
         if (permissions.isEmpty()) {
-            chainTask.finish()
+            reasonTask.finish()
             return
         }
         currentDialog = dialog
@@ -151,7 +151,7 @@ class PermissionBuilder(
             // No valid permission to show on the dialog.
             // We call dismiss instead.
             dialog.dismiss()
-            chainTask.finish()
+            reasonTask.finish()
         }
         val positiveButton = dialog.positiveButton
         val negativeButton = dialog.negativeButton
@@ -161,7 +161,7 @@ class PermissionBuilder(
         positiveButton.setOnClickListener {
             dialog.dismiss()
             if (showReasonOrGoSettings) {
-                chainTask.requestAgain(permissions)
+                reasonTask.requestAgain(permissions)
             } else {
                 forwardToSettings(permissions)
             }
@@ -170,7 +170,7 @@ class PermissionBuilder(
             negativeButton.isClickable = true
             negativeButton.setOnClickListener {
                 dialog.dismiss()
-                chainTask.finish()
+                reasonTask.finish()
             }
         }
         currentDialog?.setOnDismissListener {
@@ -179,14 +179,14 @@ class PermissionBuilder(
     }
 
     fun showHandlePermissionDialog(
-        chainTask: ChainTask,
+        reasonTask: ReasonTask,
         showReasonOrGoSettings: Boolean,
         dialogFragment: RationaleDialogFragment
     ) {
         showDialogCalled = true
         val permissions = dialogFragment.permissionsToRequest
         if (permissions.isEmpty()) {
-            chainTask.finish()
+            reasonTask.finish()
             return
         }
         dialogFragment.showNow(fragmentManager, "DPermissionRationaleDialogFragment")
@@ -197,7 +197,7 @@ class PermissionBuilder(
         positiveButton.setOnClickListener {
             dialogFragment.dismiss()
             if (showReasonOrGoSettings) {
-                chainTask.requestAgain(permissions)
+                reasonTask.requestAgain(permissions)
             } else {
                 forwardToSettings(permissions)
             }
@@ -206,41 +206,41 @@ class PermissionBuilder(
             negativeButton.isClickable = true
             negativeButton.setOnClickListener(View.OnClickListener {
                 dialogFragment.dismiss()
-                chainTask.finish()
+                reasonTask.finish()
             })
         }
     }
 
-    fun requestNow(permissions: Set<String>, chainTask: ChainTask) {
-        invisibleFragment.requestNow(this, permissions, chainTask)
+    fun requestNow(permissions: Set<String>, reasonTask: ReasonTask) {
+        invisibleFragment.requestNow(this, permissions, reasonTask)
     }
 
-    fun requestAccessBackgroundLocationPermissionNow(chainTask: ChainTask) {
-        invisibleFragment.requestAccessBackgroundLocationPermissionNow(this, chainTask)
+    fun requestAccessBackgroundLocationPermissionNow(reasonTask: ReasonTask) {
+        invisibleFragment.requestAccessBackgroundLocationPermissionNow(this, reasonTask)
     }
 
-    fun requestSystemAlertWindowPermissionNow(chainTask: ChainTask) {
-        invisibleFragment.requestSystemAlertWindowPermissionNow(this, chainTask)
+    fun requestSystemAlertWindowPermissionNow(reasonTask: ReasonTask) {
+        invisibleFragment.requestSystemAlertWindowPermissionNow(this, reasonTask)
     }
 
-    fun requestWriteSettingsPermissionNow(chainTask: ChainTask) {
-        invisibleFragment.requestWriteSettingsPermissionNow(this, chainTask)
+    fun requestWriteSettingsPermissionNow(reasonTask: ReasonTask) {
+        invisibleFragment.requestWriteSettingsPermissionNow(this, reasonTask)
     }
 
-    fun requestManageExternalStoragePermissionNow(chainTask: ChainTask) {
-        invisibleFragment.requestManageExternalStoragePermissionNow(this, chainTask)
+    fun requestManageExternalStoragePermissionNow(reasonTask: ReasonTask) {
+        invisibleFragment.requestManageExternalStoragePermissionNow(this, reasonTask)
     }
 
-    fun requestInstallPackagePermissionNow(chainTask: ChainTask) {
-        invisibleFragment.requestInstallPackagesPermissionNow(this, chainTask)
+    fun requestInstallPackagePermissionNow(reasonTask: ReasonTask) {
+        invisibleFragment.requestInstallPackagesPermissionNow(this, reasonTask)
     }
 
-    fun requestNotificationPermissionNow(chainTask: ChainTask) {
-        invisibleFragment.requestNotificationPermissionNow(this, chainTask)
+    fun requestNotificationPermissionNow(reasonTask: ReasonTask) {
+        invisibleFragment.requestNotificationPermissionNow(this, reasonTask)
     }
 
-    fun requestBodySensorsBackgroundPermissionNow(chainTask: ChainTask) {
-        invisibleFragment.requestBodySensorsBackgroundPermissionNow(this, chainTask)
+    fun requestBodySensorsBackgroundPermissionNow(reasonTask: ReasonTask) {
+        invisibleFragment.requestBodySensorsBackgroundPermissionNow(this, reasonTask)
     }
 
     fun shouldRequestBackgroundLocationPermission(): Boolean {

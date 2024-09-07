@@ -7,11 +7,12 @@ import android.provider.Settings
 import com.dp_th.dpermission.DPermission
 import java.util.*
 
-internal abstract class BaseTask(@JvmField var pb: PermissionBuilder) : ChainTask {
+internal abstract class BaseTask(@JvmField var pb: PermissionBuilder) :
+    ReasonTask {
     @JvmField
-    var next: ChainTask? = null
-    private var explainReasonScope = ExplainScope(pb, this)
-    private var forwardToSettingsScope = ForwardScope(pb, this)
+    var next: ReasonTask? = null
+    private var explainReasonScope = ReasonToAsk(pb, this)
+    private var forwardToSettingsScope = ManualScope(pb, this)
 
     override fun getExplainScope() = explainReasonScope
 
@@ -94,7 +95,7 @@ internal abstract class BaseTask(@JvmField var pb: PermissionBuilder) : ChainTas
     }
 
     init {
-        explainReasonScope = ExplainScope(pb, this)
-        forwardToSettingsScope = ForwardScope(pb, this)
+        explainReasonScope = ReasonToAsk(pb, this)
+        forwardToSettingsScope = ManualScope(pb, this)
     }
 }

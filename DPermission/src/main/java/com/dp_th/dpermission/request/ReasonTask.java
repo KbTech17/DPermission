@@ -2,11 +2,11 @@ package com.dp_th.dpermission.request;
 
 import java.util.List;
 
-public interface ChainTask {
+public interface ReasonTask {
 
-    ExplainScope getExplainScope();
+    ReasonToAsk getExplainScope();
 
-    ForwardScope getForwardScope();
+    ManualScope getForwardScope();
 
     void request();
 

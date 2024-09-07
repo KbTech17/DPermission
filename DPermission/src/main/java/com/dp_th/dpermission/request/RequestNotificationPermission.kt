@@ -12,13 +12,13 @@ internal class RequestNotificationPermission internal constructor(permissionBuil
                 finish()
                 return
             }
-            if (pb.explainReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+            if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
                 val requestList = mutableListOf(DPermission.permission.POST_NOTIFICATIONS)
                 if (pb.explainReasonCallbackWithBeforeParam != null) {
                     // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
                     pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
                 } else {
-                    pb.explainReasonCallback!!.onExplainReason(explainScope, requestList)
+                    pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                 }
                 return
             }
