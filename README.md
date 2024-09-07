@@ -66,6 +66,7 @@ Step 1. Declared permissions in the AndroidManifest.xml first.
 
 Then just request DPermissions as follow.
 
+[![MIT Java](https://www.vectorlogo.zone/logos/java/java-ar21.svg)]()
 ```java
   DPermission.with(this)
     .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
@@ -80,6 +81,20 @@ Then just request DPermissions as follow.
       }
     });
 ```
+
+[![GPLv3 Kotlin](https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-ar21.svg)]()
+```kotlin
+  DPermission.with(this)
+	.permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
+	.request(OnPermissionCallback { isGranted, grantedList, deniedList ->
+		if (isGranted) {
+			Toast.makeText(this, "All permissions are granted",Toast.LENGTH_LONG).show()
+		} else {
+			Toast.makeText(this, "These permissions are denied", Toast.LENGTH_LONG).show()
+		}
+  })
+```
+
 This is **Basic** concept, just to ask runtime permission without any dialog.
 
 Pass any instance or Context into **with** method, and specify the permissions that you want to request in the **permissions** method, then call **request** method for requesting.
@@ -94,7 +109,8 @@ As you know, Android provide **shouldShowRequestPermissionRationale** method to 
 
 To simplify this process, DPermission provide **onReasonToRequest** method. This method before **request** method, If user deny one of the permissions, **onReasonToRequest** method will get call first. Then you can call **showReasonDialog** method to explain to user why these permissions are necessary like below.
 
-```kotlin
+[![MIT Java](https://www.vectorlogo.zone/logos/java/java-ar21.svg)]()
+```java
 DPermission.with(this)
     .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
     .onReasonToRequest(new RequestReasonCallback() {
@@ -114,6 +130,20 @@ DPermission.with(this)
   });
 ```
 
+[![GPLv3 Kotlin](https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-ar21.svg)]()
+```kotlin
+  DPermission.with(this)
+	.permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
+	.onReasonToRequest(RequestReasonCallback { reason, deniedList ->
+		reason.showReasonDialog(deniedList,"These permissions are required!","OK","Cancel")})
+	.request(OnPermissionCallback { isGranted, grantedList, deniedList ->
+		if (isGranted) {
+			Toast.makeText(this, "All permissions are granted",Toast.LENGTH_LONG).show()
+		} else {
+			Toast.makeText(this, "These permissions are denied",Toast.LENGTH_LONG).show()
+		}
+	})
+```
 **showReasonDialog** method will prompt a rationale dialog with the information that second parameter provide. If user click positive button which shows text as third parameter provide, DPermission will request again with the permissions that first parameter provide.
 
 The fourth parameter as text for negative button is optional. If the denied permissions are necessary, you can ignore the fourth parameter and the dialog will be uncancelable. Which means user must allow these permissions for further usage.
@@ -122,7 +152,8 @@ Of course, user still may deny some permissions and checked **never ask again** 
 
 DPermission provide **onManualSettings** method for handling this condition. If some permissions are still "denied and never ask again" by user, **onManualSettings** method will be call. Then you can call **showManualSettingDialog** method.
 
-```kotlin
+[![MIT Java](https://www.vectorlogo.zone/logos/java/java-ar21.svg)]()
+```java
 DPermission.with(this)
     .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
     .onReasonToRequest(new RequestReasonCallback() {
@@ -147,6 +178,22 @@ DPermission.with(this)
     });
 ```
 
+[![GPLv3 Kotlin](https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-ar21.svg)]()
+```kotlin
+  DPermission.with(this)
+	.permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
+	.onReasonToRequest(RequestReasonCallback { reason, deniedList ->
+		reason.showReasonDialog(deniedList, "These permissions are required!", "OK", "Cancel")})
+	.onManualSettings(ManualSettingCallback { manual, deniedList ->
+		manual.showManualSettingDialog(deniedList, "You need to allow necessary permissions in Settings manually", "OK", "Cancel") })
+	.request(OnPermissionCallback { isGranted, grantedList, deniedList ->
+		if (isGranted) {
+			Toast.makeText(this, "All permissions are granted", Toast.LENGTH_LONG).show()
+		} else {
+			Toast.makeText(this, "These permissions are denied", Toast.LENGTH_LONG).show()
+		}
+	})
+```
 The parameters in **onManualSettings** method are similar with **onReasonToRequest** method. When user click positive button, DPermission will forward to the App settings in device and user can turn on the necessary permissions again. When user switch back to app, DPermission will request the necessary permissions automatically again.
 
 ## Explain Before Request
@@ -155,7 +202,8 @@ It is always a good practice to show the rationale dialog and explain to users w
 
 To do that with DPermission is quite simple. Just use **explainReasonBeforeRequest** method like below.
 
-```kotlin
+[![MIT Java](https://www.vectorlogo.zone/logos/java/java-ar21.svg)]()
+```java
 DPermission.with(this)
     .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
     .explainBeforeRequest()
@@ -163,6 +211,14 @@ DPermission.with(this)
   ;
 ```
 
+[![GPLv3 Kotlin](https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-ar21.svg)]()
+```kotlin
+DPermission.with(this)
+    .permissions(POST_NOTIFICATIONS, CAMERA, CALL_PHONE)
+    .explainBeforeRequest()
+//..................YOUR_CODE......................
+  
+```
 Now **Good to go**.
 
 ## Dark Theme
