@@ -3,7 +3,7 @@ package com.dp_th.dpermission.request
 import com.dp_th.dpermission.DPermission
 import java.util.*
 
-internal class RequestNormalPermissions internal constructor(permissionBuilder: PermissionBuilder) :
+internal class PermissionNormal internal constructor(permissionBuilder: PermissionBuilder) :
     BaseTask(permissionBuilder) {
 
     override fun request() {
@@ -19,12 +19,12 @@ internal class RequestNormalPermissions internal constructor(permissionBuilder: 
             finish()
             return
         }
-        if (pb.explainBeforeRequest && (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null)) {
+        if (pb.explainBeforeRequest && (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null)) {
             pb.explainBeforeRequest = false
             pb.deniedPermissions.addAll(requestList)
-            if (pb.explainReasonCallbackWithBeforeParam != null) {
+            if (pb.callbackReasonBeforeParam != null) {
                 // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
+                pb.callbackReasonBeforeParam!!.onExplainReason(explainScope, requestList, true)
             } else {
                 pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
             }

@@ -4,7 +4,7 @@ import android.Manifest
 import android.os.Build
 import com.dp_th.dpermission.DPermission
 
-internal class RequestBackgroundLocationPermission internal constructor(permissionBuilder: PermissionBuilder)
+internal class BackgroundLocationRequest internal constructor(permissionBuilder: PermissionBuilder)
     : BaseTask(permissionBuilder) {
 
     override fun request() {
@@ -25,11 +25,11 @@ internal class RequestBackgroundLocationPermission internal constructor(permissi
             val accessFindLocationGranted = DPermission.isGranted(pb.activity, Manifest.permission.ACCESS_FINE_LOCATION)
             val accessCoarseLocationGranted = DPermission.isGranted(pb.activity, Manifest.permission.ACCESS_COARSE_LOCATION)
             if (accessFindLocationGranted || accessCoarseLocationGranted) {
-                if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+                if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
                     val requestList = mutableListOf(ACCESS_BACKGROUND_LOCATION)
-                    if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    if (pb.callbackReasonBeforeParam != null) {
                         // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                        pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
+                        pb.callbackReasonBeforeParam!!.onExplainReason(explainScope, requestList, true)
                     } else {
                         pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                     }

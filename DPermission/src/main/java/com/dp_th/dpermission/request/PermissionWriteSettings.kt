@@ -4,7 +4,7 @@ import android.Manifest
 import android.os.Build
 import android.provider.Settings
 
-internal class RequestWriteSettingsPermission internal constructor(permissionBuilder: PermissionBuilder) :
+internal class PermissionWriteSettings internal constructor(permissionBuilder: PermissionBuilder) :
     BaseTask(permissionBuilder) {
 
     override fun request() {
@@ -15,11 +15,11 @@ internal class RequestWriteSettingsPermission internal constructor(permissionBui
                     finish()
                     return
                 }
-                if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+                if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
                     val requestList = mutableListOf(Manifest.permission.WRITE_SETTINGS)
-                    if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    if (pb.callbackReasonBeforeParam != null) {
                         // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                        pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
+                        pb.callbackReasonBeforeParam!!.onExplainReason(explainScope, requestList, true)
                     } else {
                         pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                     }

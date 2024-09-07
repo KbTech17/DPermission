@@ -28,11 +28,11 @@ internal abstract class BaseTask(@JvmField var pb: PermissionBuilder) :
             deniedList.addAll(pb.permissionsWontRequest)
             if (pb.shouldRequestBackgroundLocationPermission()) {
                 if (DPermission.isGranted(pb.activity,
-                        RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION
+                        BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION
                     )) {
-                    pb.grantedPermissions.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                    pb.grantedPermissions.add(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
                 } else {
-                    deniedList.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                    deniedList.add(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
                 }
             }
             if (pb.shouldRequestSystemAlertWindowPermission()
@@ -54,24 +54,24 @@ internal abstract class BaseTask(@JvmField var pb: PermissionBuilder) :
             if (pb.shouldRequestManageExternalStoragePermission()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R &&
                     Environment.isExternalStorageManager()) {
-                    pb.grantedPermissions.add(RequestManageExternalStoragePermission.MANAGE_EXTERNAL_STORAGE)
+                    pb.grantedPermissions.add(PermissionManageExternalStorage.MANAGE_EXTERNAL_STORAGE)
                 } else {
-                    deniedList.add(RequestManageExternalStoragePermission.MANAGE_EXTERNAL_STORAGE)
+                    deniedList.add(PermissionManageExternalStorage.MANAGE_EXTERNAL_STORAGE)
                 }
             }
             if (pb.shouldRequestInstallPackagesPermission()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && pb.targetSdkVersion >= Build.VERSION_CODES.O) {
                     if (pb.activity.packageManager.canRequestPackageInstalls()) {
-                        pb.grantedPermissions.add(RequestInstallPackagesPermission.REQUEST_INSTALL_PACKAGES)
+                        pb.grantedPermissions.add(PermissionInstallPackages.REQUEST_INSTALL_PACKAGES)
                     } else {
-                        deniedList.add(RequestInstallPackagesPermission.REQUEST_INSTALL_PACKAGES)
+                        deniedList.add(PermissionInstallPackages.REQUEST_INSTALL_PACKAGES)
                     }
                 } else {
-                    deniedList.add(RequestInstallPackagesPermission.REQUEST_INSTALL_PACKAGES)
+                    deniedList.add(PermissionInstallPackages.REQUEST_INSTALL_PACKAGES)
                 }
             }
             if (pb.shouldRequestNotificationPermission()) {
-                if (DPermission.areNotificationsEnabled(pb.activity)) {
+                if (DPermission.isNotificationEnabled(pb.activity)) {
                     pb.grantedPermissions.add(DPermission.permission.POST_NOTIFICATIONS)
                 } else {
                     deniedList.add(DPermission.permission.POST_NOTIFICATIONS)
@@ -79,11 +79,11 @@ internal abstract class BaseTask(@JvmField var pb: PermissionBuilder) :
             }
             if (pb.shouldRequestBodySensorsBackgroundPermission()) {
                 if (DPermission.isGranted(pb.activity,
-                        RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND
+                        BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND
                     )) {
-                    pb.grantedPermissions.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+                    pb.grantedPermissions.add(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
                 } else {
-                    deniedList.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+                    deniedList.add(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
                 }
             }
             if (pb.perCallback != null) {

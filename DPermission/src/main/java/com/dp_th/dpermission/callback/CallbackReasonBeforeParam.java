@@ -6,6 +6,6 @@ import com.dp_th.dpermission.request.ReasonToAsk;
 
 import java.util.List;
 
-public interface ExplainReasonCallbackWithBeforeParam {
+public interface CallbackReasonBeforeParam {
     void onExplainReason(@NonNull ReasonToAsk scope, @NonNull List<String> deniedList, boolean beforeRequest);
 }

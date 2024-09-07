@@ -92,8 +92,6 @@ class DefaultDialog(context: Context,
                 currentVersion == Build.VERSION_CODES.S -> permissionMapOnS[permission]
                 currentVersion == Build.VERSION_CODES.TIRAMISU -> permissionMapOnT[permission]
                 else -> {
-                    // If currentVersion is newer than the latest version we support, we just use
-                    // the latest version for temp. Will upgrade in the next release.
                     permissionMapOnT[permission]
                 }
             }

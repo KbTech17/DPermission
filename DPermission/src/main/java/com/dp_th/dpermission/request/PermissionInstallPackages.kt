@@ -3,7 +3,7 @@ package com.dp_th.dpermission.request
 import android.Manifest
 import android.os.Build
 
-internal class RequestInstallPackagesPermission internal constructor(permissionBuilder: PermissionBuilder) :
+internal class PermissionInstallPackages internal constructor(permissionBuilder: PermissionBuilder) :
     BaseTask(permissionBuilder) {
 
     override fun request() {
@@ -15,11 +15,11 @@ internal class RequestInstallPackagesPermission internal constructor(permissionB
                 finish()
                 return
             }
-            if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+            if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
                 val requestList = mutableListOf(Manifest.permission.REQUEST_INSTALL_PACKAGES)
-                if (pb.explainReasonCallbackWithBeforeParam != null) {
+                if (pb.callbackReasonBeforeParam != null) {
                     // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                    pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
+                    pb.callbackReasonBeforeParam!!.onExplainReason(explainScope, requestList, true)
                 } else {
                     pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                 }

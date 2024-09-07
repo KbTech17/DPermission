@@ -102,7 +102,7 @@ class InvisibleFragment : Fragment() {
     ) {
         pb = permissionBuilder
         task = reasonTask
-        requestBackgroundLocationLauncher.launch(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+        requestBackgroundLocationLauncher.launch(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
     }
 
     fun requestSystemAlertWindowPermissionNow(
@@ -190,7 +190,7 @@ class InvisibleFragment : Fragment() {
     ) {
         pb = permissionBuilder
         task = reasonTask
-        requestBodySensorsBackgroundLauncher.launch(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+        requestBodySensorsBackgroundLauncher.launch(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
     }
 
     fun forwardToSettings() {
@@ -283,12 +283,12 @@ class InvisibleFragment : Fragment() {
             } else {
                 var shouldFinishTheTask = true // Indicate if we should finish the task
                 // If explainReasonCallback is not null and there are denied permissions. Try the ExplainReasonCallback.
-                if ((pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) && showReasonList.isNotEmpty()) {
+                if ((pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) && showReasonList.isNotEmpty()) {
                     shouldFinishTheTask =
                         false // shouldn't because ExplainReasonCallback handles it
-                    if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    if (pb.callbackReasonBeforeParam != null) {
                         // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                        pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                        pb.callbackReasonBeforeParam!!.onExplainReason(
                             task.explainScope, ArrayList(pb.deniedPermissions), false
                         )
                     } else {
@@ -331,24 +331,24 @@ class InvisibleFragment : Fragment() {
         if (checkForGC()) {
             postForResult {
                 if (granted) {
-                    pb.grantedPermissions.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                    pb.grantedPermissions.add(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
                     // Remove granted permissions from deniedPermissions and permanentDeniedPermissions set in PermissionBuilder.
-                    pb.deniedPermissions.remove(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
-                    pb.permanentDeniedPermissions.remove(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                    pb.deniedPermissions.remove(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
+                    pb.permanentDeniedPermissions.remove(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
                     task.finish()
                 } else {
                     var goesToOnPermissionCallback = true // Indicate if we should finish the task
                     val shouldShowRationale =
-                        shouldShowRequestPermissionRationale(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                        shouldShowRequestPermissionRationale(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
                     // If explainReasonCallback is not null and we should show rationale. Try the ExplainReasonCallback.
-                    if ((pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) && shouldShowRationale) {
+                    if ((pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) && shouldShowRationale) {
                         goesToOnPermissionCallback =
                             false // shouldn't because ExplainReasonCallback handles it
                         val permissionsToExplain: MutableList<String> = ArrayList()
-                        permissionsToExplain.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
-                        if (pb.explainReasonCallbackWithBeforeParam != null) {
+                        permissionsToExplain.add(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
+                        if (pb.callbackReasonBeforeParam != null) {
                             // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                            pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                            pb.callbackReasonBeforeParam!!.onExplainReason(
                                 task.explainScope, permissionsToExplain, false
                             )
                         } else {
@@ -361,7 +361,7 @@ class InvisibleFragment : Fragment() {
                         goesToOnPermissionCallback =
                             false // shouldn't because ForwardToSettingsCallback handles it
                         val permissionsToForward: MutableList<String> = ArrayList()
-                        permissionsToForward.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                        permissionsToForward.add(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
                         pb.manualSettingCallback!!.onManualSettings(
                             task.forwardScope,
                             permissionsToForward
@@ -384,10 +384,10 @@ class InvisibleFragment : Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (Settings.canDrawOverlays(requireContext())) {
                     task.finish()
-                } else if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
-                    if (pb.explainReasonCallbackWithBeforeParam != null) {
+                } else if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
+                    if (pb.callbackReasonBeforeParam != null) {
                         // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                        pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                        pb.callbackReasonBeforeParam!!.onExplainReason(
                             task.explainScope,
                             listOf(Manifest.permission.SYSTEM_ALERT_WINDOW),
                             false
@@ -410,10 +410,10 @@ class InvisibleFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (Settings.System.canWrite(requireContext())) {
                         task.finish()
-                    } else if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
-                        if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    } else if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
+                        if (pb.callbackReasonBeforeParam != null) {
                             // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                            pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                            pb.callbackReasonBeforeParam!!.onExplainReason(
                                 task.explainScope, listOf(Manifest.permission.WRITE_SETTINGS), false
                             )
                         } else {
@@ -435,10 +435,10 @@ class InvisibleFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     if (Environment.isExternalStorageManager()) {
                         task.finish()
-                    } else if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
-                        if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    } else if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
+                        if (pb.callbackReasonBeforeParam != null) {
                             // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                            pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                            pb.callbackReasonBeforeParam!!.onExplainReason(
                                 task.explainScope,
                                 listOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE),
                                 false
@@ -463,10 +463,10 @@ class InvisibleFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (requireActivity().packageManager.canRequestPackageInstalls()) {
                         task.finish()
-                    } else if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
-                        if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    } else if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
+                        if (pb.callbackReasonBeforeParam != null) {
                             // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                            pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                            pb.callbackReasonBeforeParam!!.onExplainReason(
                                 task.explainScope,
                                 listOf(Manifest.permission.REQUEST_INSTALL_PACKAGES),
                                 false
@@ -489,12 +489,12 @@ class InvisibleFragment : Fragment() {
         if (checkForGC()) {
             postForResult {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if (DPermission.areNotificationsEnabled(requireContext())) {
+                    if (DPermission.isNotificationEnabled(requireContext())) {
                         task.finish()
-                    } else if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
-                        if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    } else if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
+                        if (pb.callbackReasonBeforeParam != null) {
                             // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                            pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                            pb.callbackReasonBeforeParam!!.onExplainReason(
                                 task.explainScope,
                                 listOf(DPermission.permission.POST_NOTIFICATIONS),
                                 false
@@ -517,24 +517,24 @@ class InvisibleFragment : Fragment() {
         if (checkForGC()) {
             postForResult {
                 if (granted) {
-                    pb.grantedPermissions.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+                    pb.grantedPermissions.add(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
                     // Remove granted permissions from deniedPermissions and permanentDeniedPermissions set in PermissionBuilder.
-                    pb.deniedPermissions.remove(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
-                    pb.permanentDeniedPermissions.remove(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+                    pb.deniedPermissions.remove(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
+                    pb.permanentDeniedPermissions.remove(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
                     task.finish()
                 } else {
                     var goesToOnPermissionCallback = true // Indicate if we should finish the task
                     val shouldShowRationale =
-                        shouldShowRequestPermissionRationale(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+                        shouldShowRequestPermissionRationale(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
                     // If explainReasonCallback is not null and we should show rationale. Try the ExplainReasonCallback.
-                    if ((pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) && shouldShowRationale) {
+                    if ((pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) && shouldShowRationale) {
                         goesToOnPermissionCallback =
                             false // shouldn't because ExplainReasonCallback handles it
                         val permissionsToExplain: MutableList<String> = ArrayList()
-                        permissionsToExplain.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
-                        if (pb.explainReasonCallbackWithBeforeParam != null) {
+                        permissionsToExplain.add(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
+                        if (pb.callbackReasonBeforeParam != null) {
                             // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                            pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(
+                            pb.callbackReasonBeforeParam!!.onExplainReason(
                                 task.explainScope, permissionsToExplain, false
                             )
                         } else {
@@ -547,7 +547,7 @@ class InvisibleFragment : Fragment() {
                         goesToOnPermissionCallback =
                             false // shouldn't because ForwardToSettingsCallback handles it
                         val permissionsToForward: MutableList<String> = ArrayList()
-                        permissionsToForward.add(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+                        permissionsToForward.add(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
                         pb.manualSettingCallback!!.onManualSettings(
                             task.forwardScope,
                             permissionsToForward

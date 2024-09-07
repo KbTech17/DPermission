@@ -10,8 +10,8 @@ android {
         applicationId "com.dp_th.dpermission"
         minSdk 21
         targetSdk 35
-        versionCode 1
-        versionName "1.0"
+        versionCode 26
+        versionName "20.2.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,5 +38,5 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
-    //implementation 'com.github.KbTech17:DPermission:2.1.6'
+    //implementation 'com.github.KbTech17:DPermission:2.1.7'
 }

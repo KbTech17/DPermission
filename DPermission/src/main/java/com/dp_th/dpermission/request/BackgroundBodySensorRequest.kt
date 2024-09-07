@@ -4,7 +4,7 @@ import android.Manifest
 import android.os.Build
 import com.dp_th.dpermission.DPermission
 
-internal class RequestBodySensorsBackgroundPermission internal constructor(permissionBuilder: PermissionBuilder)
+internal class BackgroundBodySensorRequest internal constructor(permissionBuilder: PermissionBuilder)
     : BaseTask(permissionBuilder) {
 
     override fun request() {
@@ -28,11 +28,11 @@ internal class RequestBodySensorsBackgroundPermission internal constructor(permi
                 false
             }
             if (bodySensorGranted) {
-                if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+                if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
                     val requestList = mutableListOf(BODY_SENSORS_BACKGROUND)
-                    if (pb.explainReasonCallbackWithBeforeParam != null) {
+                    if (pb.callbackReasonBeforeParam != null) {
                         // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                        pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
+                        pb.callbackReasonBeforeParam!!.onExplainReason(explainScope, requestList, true)
                     } else {
                         pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                     }

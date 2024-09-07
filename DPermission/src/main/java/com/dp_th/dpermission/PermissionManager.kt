@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.dp_th.dpermission.dialog.allSpecialPermissions
 import com.dp_th.dpermission.request.PermissionBuilder
-import com.dp_th.dpermission.request.RequestBackgroundLocationPermission
+import com.dp_th.dpermission.request.BackgroundLocationRequest
 import kotlin.collections.LinkedHashSet
 
-class PermissionMediator {
+class PermissionManager {
 
     private var activity: FragmentActivity? = null
     private var fragment: Fragment? = null
@@ -37,21 +37,23 @@ class PermissionMediator {
                 normalPermissionSet.add(permission)
             }
         }
-        if (RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION in specialPermissionSet) {
+        if (BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION in specialPermissionSet) {
             if (osVersion == Build.VERSION_CODES.Q ||
                 (osVersion == Build.VERSION_CODES.R && targetSdkVersion < Build.VERSION_CODES.R)) {
-                // If we request ACCESS_BACKGROUND_LOCATION on Q or on R but targetSdkVersion below R,
-                // We don't need to request specially, just request as normal permission.
-                specialPermissionSet.remove(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
-                normalPermissionSet.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                specialPermissionSet.remove(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
+                normalPermissionSet.add(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
             }
         }
         if (DPermission.permission.POST_NOTIFICATIONS in specialPermissionSet) {
             if (osVersion >= Build.VERSION_CODES.TIRAMISU && targetSdkVersion >= Build.VERSION_CODES.TIRAMISU) {
-                // If we request POST_NOTIFICATIONS on TIRAMISU or above and targetSdkVersion >= TIRAMISU,
-                // We don't need to request specially, just request as normal permission.
                 specialPermissionSet.remove(DPermission.permission.POST_NOTIFICATIONS)
                 normalPermissionSet.add(DPermission.permission.POST_NOTIFICATIONS)
+            }
+        }
+        if (DPermission.permission.SCHEDULE_EXACT_ALARM in specialPermissionSet) {
+            if (osVersion >= Build.VERSION_CODES.TIRAMISU && targetSdkVersion >= Build.VERSION_CODES.TIRAMISU) {
+                specialPermissionSet.remove(DPermission.permission.SCHEDULE_EXACT_ALARM)
+                normalPermissionSet.add(DPermission.permission.SCHEDULE_EXACT_ALARM)
             }
         }
         return PermissionBuilder(activity, fragment, normalPermissionSet, specialPermissionSet)

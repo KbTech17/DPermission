@@ -5,22 +5,22 @@ import android.Manifest
 import android.annotation.TargetApi
 import android.os.Build
 import com.dp_th.dpermission.DPermission
-import com.dp_th.dpermission.request.RequestBackgroundLocationPermission
-import com.dp_th.dpermission.request.RequestBodySensorsBackgroundPermission
-import com.dp_th.dpermission.request.RequestInstallPackagesPermission
-import com.dp_th.dpermission.request.RequestManageExternalStoragePermission
+import com.dp_th.dpermission.request.BackgroundLocationRequest
+import com.dp_th.dpermission.request.BackgroundBodySensorRequest
+import com.dp_th.dpermission.request.PermissionInstallPackages
+import com.dp_th.dpermission.request.PermissionManageExternalStorage
 
 /**
  * Maintains all the special permissions that we need to handle by special case.
  */
 val allSpecialPermissions = setOf(
-    RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION,
+    BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION,
     Manifest.permission.SYSTEM_ALERT_WINDOW,
     Manifest.permission.WRITE_SETTINGS,
-    RequestManageExternalStoragePermission.MANAGE_EXTERNAL_STORAGE,
-    RequestInstallPackagesPermission.REQUEST_INSTALL_PACKAGES,
+    PermissionManageExternalStorage.MANAGE_EXTERNAL_STORAGE,
+    PermissionInstallPackages.REQUEST_INSTALL_PACKAGES,
     DPermission.permission.POST_NOTIFICATIONS,
-    RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND,
+    BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND,
 )
 
 /**

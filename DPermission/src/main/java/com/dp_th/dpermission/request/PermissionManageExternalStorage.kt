@@ -3,7 +3,7 @@ package com.dp_th.dpermission.request
 import android.os.Build
 import android.os.Environment
 
-internal class RequestManageExternalStoragePermission internal constructor(permissionBuilder: PermissionBuilder) :
+internal class PermissionManageExternalStorage internal constructor(permissionBuilder: PermissionBuilder) :
     BaseTask(permissionBuilder) {
 
     override fun request() {
@@ -13,11 +13,11 @@ internal class RequestManageExternalStoragePermission internal constructor(permi
                 finish()
                 return
             }
-            if (pb.requestReasonCallback != null || pb.explainReasonCallbackWithBeforeParam != null) {
+            if (pb.requestReasonCallback != null || pb.callbackReasonBeforeParam != null) {
                 val requestList = mutableListOf(MANAGE_EXTERNAL_STORAGE)
-                if (pb.explainReasonCallbackWithBeforeParam != null) {
+                if (pb.callbackReasonBeforeParam != null) {
                     // callback ExplainReasonCallbackWithBeforeParam prior to ExplainReasonCallback
-                    pb.explainReasonCallbackWithBeforeParam!!.onExplainReason(explainScope, requestList, true)
+                    pb.callbackReasonBeforeParam!!.onExplainReason(explainScope, requestList, true)
                 } else {
                     pb.requestReasonCallback!!.onExplainReason(explainScope, requestList)
                 }

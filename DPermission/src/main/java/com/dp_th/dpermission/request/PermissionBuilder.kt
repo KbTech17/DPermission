@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.dp_th.dpermission.DPermission
 import com.dp_th.dpermission.callback.RequestReasonCallback
-import com.dp_th.dpermission.callback.ExplainReasonCallbackWithBeforeParam
+import com.dp_th.dpermission.callback.CallbackReasonBeforeParam
 import com.dp_th.dpermission.callback.ManualSettingCallback
 import com.dp_th.dpermission.callback.OnPermissionCallback
 import com.dp_th.dpermission.dialog.DefaultDialog
@@ -81,7 +81,7 @@ class PermissionBuilder(
     @JvmField
     var requestReasonCallback: RequestReasonCallback? = null
     @JvmField
-    var explainReasonCallbackWithBeforeParam: ExplainReasonCallbackWithBeforeParam? = null
+    var callbackReasonBeforeParam: CallbackReasonBeforeParam? = null
     @JvmField
     var manualSettingCallback: ManualSettingCallback? = null
     val targetSdkVersion: Int
@@ -90,8 +90,8 @@ class PermissionBuilder(
         requestReasonCallback = callback
         return this
     }
-    fun onReasonToRequest(callback: ExplainReasonCallbackWithBeforeParam?): PermissionBuilder {
-        explainReasonCallbackWithBeforeParam = callback
+    fun onReasonToRequest(callback: CallbackReasonBeforeParam?): PermissionBuilder {
+        callbackReasonBeforeParam = callback
         return this
     }
     fun onManualSettings(callback: ManualSettingCallback?): PermissionBuilder {
@@ -148,8 +148,6 @@ class PermissionBuilder(
         currentDialog = dialog
         dialog.show()
         if (dialog is DefaultDialog && dialog.isPermissionLayoutEmpty()) {
-            // No valid permission to show on the dialog.
-            // We call dismiss instead.
             dialog.dismiss()
             reasonTask.finish()
         }
@@ -244,7 +242,7 @@ class PermissionBuilder(
     }
 
     fun shouldRequestBackgroundLocationPermission(): Boolean {
-        return specialPermissions.contains(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+        return specialPermissions.contains(BackgroundLocationRequest.ACCESS_BACKGROUND_LOCATION)
     }
 
     fun shouldRequestSystemAlertWindowPermission(): Boolean {
@@ -256,11 +254,11 @@ class PermissionBuilder(
     }
 
     fun shouldRequestManageExternalStoragePermission(): Boolean {
-        return specialPermissions.contains(RequestManageExternalStoragePermission.MANAGE_EXTERNAL_STORAGE)
+        return specialPermissions.contains(PermissionManageExternalStorage.MANAGE_EXTERNAL_STORAGE)
     }
 
     fun shouldRequestInstallPackagesPermission(): Boolean {
-        return specialPermissions.contains(RequestInstallPackagesPermission.REQUEST_INSTALL_PACKAGES)
+        return specialPermissions.contains(PermissionInstallPackages.REQUEST_INSTALL_PACKAGES)
     }
 
     fun shouldRequestNotificationPermission(): Boolean {
@@ -268,24 +266,21 @@ class PermissionBuilder(
     }
 
     fun shouldRequestBodySensorsBackgroundPermission(): Boolean {
-        return specialPermissions.contains(RequestBodySensorsBackgroundPermission.BODY_SENSORS_BACKGROUND)
+        return specialPermissions.contains(BackgroundBodySensorRequest.BODY_SENSORS_BACKGROUND)
     }
 
     private fun startRequest() {
-        // Lock the orientation when requesting permissions, or callback maybe missed due to
-        // activity destroyed.
         lockOrientation()
 
-        // Build the request chain. RequestNormalPermissions runs first, then RequestBackgroundLocationPermission runs.
         val requestChain = RequestChain()
-        requestChain.addTaskToChain(RequestNormalPermissions(this))
-        requestChain.addTaskToChain(RequestBackgroundLocationPermission(this))
-        requestChain.addTaskToChain(RequestSystemAlertWindowPermission(this))
-        requestChain.addTaskToChain(RequestWriteSettingsPermission(this))
-        requestChain.addTaskToChain(RequestManageExternalStoragePermission(this))
-        requestChain.addTaskToChain(RequestInstallPackagesPermission(this))
-        requestChain.addTaskToChain(RequestNotificationPermission(this))
-        requestChain.addTaskToChain(RequestBodySensorsBackgroundPermission(this))
+        requestChain.addTaskToChain(PermissionNormal(this))
+        requestChain.addTaskToChain(BackgroundLocationRequest(this))
+        requestChain.addTaskToChain(PermissionSystemAlertWindow(this))
+        requestChain.addTaskToChain(PermissionWriteSettings(this))
+        requestChain.addTaskToChain(PermissionManageExternalStorage(this))
+        requestChain.addTaskToChain(PermissionInstallPackages(this))
+        requestChain.addTaskToChain(PermissionNotification(this))
+        requestChain.addTaskToChain(BackgroundBodySensorRequest(this))
         requestChain.runTask()
     }
 
