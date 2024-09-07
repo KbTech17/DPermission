@@ -20,7 +20,7 @@ dependencyResolutionManagement {
 	}
 
 dependencies {
-    implementation 'com.github.KbTech17:DPermission:2.1.7'
+    implementation 'com.github.KbTech17:DPermission:2.1.8'
 }
 ```
 or
@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.KbTech17:DPermission:2.1.7'
+    implementation 'com.github.KbTech17:DPermission:2.1.8'
 }
 ```
 
