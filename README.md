@@ -230,7 +230,7 @@ DPermission support Android dark theme automatically or you do not need to write
 
 ## Do your code fly ? Buy a cup of coffee for me 😋
 
-[<img src="img/pp_donate.png" width="32%" />](https://www.paypal.com/ncp/payment/VY9NT7EYY77HJ)
+[<img src="img/pp_donate.png" width="32%" />](https://www.paypal.com/ncp/payment/ARPPRFA6HKS2S) <img src="img/buy_cof.png" width="32%" />
 
 
 ## License
