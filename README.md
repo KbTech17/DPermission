@@ -228,9 +228,9 @@ DPermission support Android dark theme automatically or you do not need to write
 
 
 
-## Do your code fly ?
-Buy a cup of coffee for me:- </br>
-[<img src="gradle/pp_donate.png" width="32%" />](https://www.paypal.com/ncp/payment/VY9NT7EYY77HJ)
+## Do your code fly ? Buy a cup of coffee for me 😋
+
+[<img src="img/pp_donate.png" width="32%" />](https://www.paypal.com/ncp/payment/VY9NT7EYY77HJ)
 
 
 ## License
