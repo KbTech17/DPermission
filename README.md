@@ -227,6 +227,13 @@ Now **Good to go**.
 DPermission support Android dark theme automatically or you do not need to write any additional code. Just change your device into dark theme, everything works great.
 
 
+
+## Do your code fly ?
+Buy a cup of coffee for me:- </br>
+[dpaeppac@gmail.com](https://www.paypal.com/ncp/payment/VY9NT7EYY77HJ)</br>
+[![MIT PayPal](https://www.vectorlogo.zone/logos/paypal/paypal-ar21.svg)](https://www.paypal.com/ncp/payment/VY9NT7EYY77HJ)
+
+
 ## License
 
 ```
@@ -246,10 +253,6 @@ limitations under the License.
 ```
 
 
-## Do your code fly ?
-Buy a cup of coffee for me:- </br>
-dpaeppac@gmail.com</br>
-[![MIT PayPal](https://www.vectorlogo.zone/logos/paypal/paypal-ar21.svg)]()
 
 
 ## Platform
